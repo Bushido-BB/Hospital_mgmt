@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
-import {checkLogin} from './common/requests'
+import {checkLogin, checkSignup} from './common/requests'
 import '../style/login.css'
+import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer, toast } from 'react-toastify'
 
 // Notify Loader APIcomponents/
 
@@ -28,13 +30,7 @@ class Login extends Component {
 
     addToLoginState=(e)=>{
         var object=this.state.login_details
-        // if(e.target.id==='username'){
-        //     object["username"]=e.target.value
-        // }
-        // else if(e.target.id==='password'){
-        //     object["password"]=e.target.value
-        // }
-        this.validate({[e.target.name]:e.target.value})
+        // this.validate({[e.target.name]:e.target.value})
         object[e.target.id] = e.target.value
         this.setState({
             login_details:object
@@ -81,11 +77,34 @@ class Login extends Component {
     }
 
     loginSequence=()=>{
-        console.log("PerformSubmit")
-        var ch=checkLogin(this.state.login_details,"http://192.168.1.22/auth/register/")
-        if(ch.token!=null){
-            this.props.history.push('/dashboard')
-        }
+        var ch = checkLogin(this.state.login_details,"http://192.168.1.22:3009/auth/login/").then((res)=>{
+            if(res.access_token!=null){
+                if(res['msg']==='Login Successful'){
+                    console.log("REsult login ",res)
+                    this.props.history.push('/dashboard')
+                    // toast.success(res['msg'],{position: toast.POSITION.TOP_LEFT})
+                }
+                else{
+                    // toast.error(res['msg'],{position: toast.POSITION.TOP_LEFT})
+                }
+            }
+        })
+    }
+
+    signupSequence =()=>{
+        var ch = checkSignup(this.state.signup_details,"http://192.168.1.22:3009/auth/register/").then((res)=>{
+            console.log("Result: ",res)
+            if(res!=null){
+                if(res['message']==='User created successfully'){
+                    console.log("SignUP: ",res)
+                    this.props.history.push('/dashboard')
+                    // toast.success(res['msg'],{position: toast.POSITION.TOP_LEFT})
+                }
+                else{
+                    // toast.error(res['msg'],{position: toast.POSITION.TOP_LEFT})
+                }
+            }
+        })
     }
 
     render() {
@@ -98,9 +117,9 @@ class Login extends Component {
                     <div className="login-form">
                         <form className="sign-in-htm">
                             <div className="group">
-                                <label htmlFor="username" className="label">Username</label>
-                                <input id="username" name="username" type="text" className="input" onChange={this.addToLoginState}/>
-                                <span name="username_span">Testing...</span>
+                                <label htmlFor="email" className="label">Email</label>
+                                <input id="email" name="email" type="text" className="input" onChange={this.addToLoginState}/>
+                                <span name="email_span">Testing...</span>
                             </div>
                             <div className="group">
                                 <label htmlFor="password" className="label">Password</label>
@@ -122,10 +141,10 @@ class Login extends Component {
                             </div>
                         </form>
 
-                        <form className="sign-up-htm" method="POST">
+                        <form className="sign-up-htm">
                             <div className="group">
-                                <label htmlFor="username" className="label">Username</label>
-                                <input id="username" name="username" type="text" className="input"  onChange={this.addToSignupState}/>
+                                <label htmlFor="userName" className="label">Username</label>
+                                <input id="userName" name="userName" type="text" className="input"  onChange={this.addToSignupState}/>
                             </div>
                             <div className="group">
                                 <label htmlFor="age" className="label">Age</label>
@@ -156,11 +175,10 @@ class Login extends Component {
                                 <input id="pass" type="password" className="input" data-type="password"  onChange={this.addToSignupState}/>
                             </div>
                             <div className="group">
-                                <input type="submit" className="button" value="Sign Up" onClick={null}/>
+                                <input type="submit" className="button" value="Sign Up" onClick={this.signupSequence}/>
                             </div>
                             <div className="hr"></div>
                         </form>
-
                     </div>
                 </div>
             </div>

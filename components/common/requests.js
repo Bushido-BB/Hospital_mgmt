@@ -2,7 +2,7 @@ import React from 'react'
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer, toast } from 'react-toastify'
 
-export const checkLogin = (url) => {
+export const checkLogin = (data, url) => {
         var response = fetch(url,
             {
                 method: 'POST',
@@ -11,31 +11,59 @@ export const checkLogin = (url) => {
                     'Content-Type':'application/json'
                 },
                 body: JSON.stringify({
-                    email:"admin@gmail.com",
-                    password:"testing"
+                    email:data.email,
+                    password:data.password
                 })
             }
         )
         .then(res => {
-                console.log(res)
-                res.json()
+                return res.json()
             }
         )   
         .then(res => {
-            if(res['msg']==='Login Successful'){
-                toast.success(res['msg'],{position: toast.POSITION.TOP_LEFT})
-            }
-            else{
-                toast.error(res['msg'],{position: toast.POSITION.TOP_LEFT})
-            }
+            return res
             /*access_token msg*/
         })
         .catch(err => {
             console.log("ERROR:" + err)
         })
-        console.log(response)
         return response
 }
+
+export const checkSignup = (data, url) => {
+    var response = fetch(url,
+        {
+            method: 'POST',
+            headers:{
+                'Accept':'application/json',
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                email:data.email,
+                password:data.password,
+                userName:data.userName,
+                email:data.email,
+                password:data.password,
+                age:data.age,
+                gender:data.gender,
+                phone:data.phone,
+            })
+        }
+    )
+    .then(res => {
+            return res.json()
+        }
+    )   
+    .then(res => {
+        return res
+        /*access_token msg*/
+    })
+    .catch(err => {
+        console.log("ERROR:" + err)
+    })
+    return response
+}
+
 export const testCheckLogin = (login_details,url,redirect_path)=>{
     var response={}
     console.log("testCheckLogin ",login_details)
@@ -69,7 +97,7 @@ export default testCheckLogin
         // }
     //      fetch("http://35.175.245.127/api/v1/login",
     //      fetch("http://192.168.1.22/auth/register",
-    //      fetch("http://192.168.1.22/auth/login",  sandeep@gmail.com sandeep
+    //      fetch("http//192.168.1.22:3009/auth/login",  sandeep@gmail.com sandeep
     //         {
     //             method: 'POST',
     //             headers:{
