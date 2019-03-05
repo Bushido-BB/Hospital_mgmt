@@ -9,11 +9,11 @@ class Login extends Component {
         super(props)
         this.state = {
             login_details:{
-                username:"",
+                email:"",
                 password:""
             },
             signup_details:{
-                username:"",
+                userName:"",
                 email:"",
                 password:"",
                 conf_password:"",
@@ -82,7 +82,7 @@ class Login extends Component {
 
     loginSequence=()=>{
         console.log("PerformSubmit")
-        var ch=checkLogin(this.state.login_details,"http://35.175.245.127/api/v1/login")
+        var ch=checkLogin(this.state.login_details,"http://192.168.1.22/auth/register/")
         if(ch.token!=null){
             this.props.history.push('/dashboard')
         }

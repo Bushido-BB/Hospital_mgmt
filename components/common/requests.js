@@ -69,6 +69,7 @@ export default testCheckLogin
         // }
     //      fetch("http://35.175.245.127/api/v1/login",
     //      fetch("http://192.168.1.22/auth/register",
+    //      fetch("http://192.168.1.22/auth/login",  sandeep@gmail.com sandeep
     //         {
     //             method: 'POST',
     //             headers:{
